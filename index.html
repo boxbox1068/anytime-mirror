@@ -1192,6 +1192,11 @@
       }).then(stream => {
         this._video.addEventListener('loadedmetadata', e => callback(this._video));
         this._video.srcObject = stream;
+
+        const track = stream.getVideoTracks()[0];
+        if (this._useRearCamera && true) {
+          track.applyConstraints({advanced: [{torch: true}]});
+        }
       }).catch(error => {
         errorCallback();
       });
