@@ -1184,7 +1184,8 @@
         return false;
       }
       navigator.mediaDevices.getUserMedia({
-        video: {facingMode: 'user'},
+//        video: {facingMode: 'user'},
+        video: {facingMode: 'environment'},
         audio: false
       }).then(stream => {
         this._video.addEventListener('loadedmetadata', e => callback(this._video));
