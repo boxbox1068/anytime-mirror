@@ -1156,9 +1156,10 @@
     }
   }
   class Camera {
-    constructor({flip, grayscale} = {}) {
+    constructor({flip, grayscale, useRearCamera} = {}) {
       flip = typeof flip == 'boolean' ? flip : false;
       grayscale = typeof grayscale == 'boolean' ? grayscale : false;
+      useRearCamera = typeof useRearCamera == 'boolean' ? useRearCamera : false;
       const video = (() => {
         const o = document.createElement('video');
         o.style.cssText = `
@@ -1171,6 +1172,7 @@
         return o;
       })();
       this._video = video;
+      this._useRearCamera = useRearCamera;
     }
     get isWorking() {
       return this._video.srcObject != null;
@@ -1184,8 +1186,7 @@
         return false;
       }
       navigator.mediaDevices.getUserMedia({
-//        video: {facingMode: 'user'},
-        video: {facingMode: 'environment'},
+        video: {facingMode: this._useRearCamera ? 'environment' : 'user'},
         audio: false
       }).then(stream => {
         this._video.addEventListener('loadedmetadata', e => callback(this._video));
