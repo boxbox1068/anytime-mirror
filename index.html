@@ -226,7 +226,8 @@
     const camera = new Camera({
       flip: queryParser.getValue('flip', 'boolean', true),
       grayscale: queryParser.getValue('grayscale', 'boolean', false),
-      useRearCamera: queryParser.getValue('useRearCamera', 'boolean', false)
+      useRearCamera: queryParser.getValue('useRearCamera', 'boolean', false),
+      useTorch: queryParser.getValue('useTorch', 'boolean', false)
     });
     camera.start(video => {
       magnifier.content = video;
@@ -1157,10 +1158,11 @@
     }
   }
   class Camera {
-    constructor({flip, grayscale, useRearCamera} = {}) {
+    constructor({flip, grayscale, useRearCamera, useTorch} = {}) {
       flip = typeof flip == 'boolean' ? flip : false;
       grayscale = typeof grayscale == 'boolean' ? grayscale : false;
       useRearCamera = typeof useRearCamera == 'boolean' ? useRearCamera : false;
+      useTorch = typeof useTorch == 'boolean' ? useTorch : false;
       const video = (() => {
         const o = document.createElement('video');
         o.style.cssText = `
@@ -1174,6 +1176,7 @@
       })();
       this._video = video;
       this._useRearCamera = useRearCamera;
+      this._useTorch = useTorch;
     }
     get isWorking() {
       return this._video.srcObject != null;
@@ -1194,7 +1197,7 @@
         this._video.srcObject = stream;
 
         const track = stream.getVideoTracks()[0];
-        if (this._useRearCamera && true) {
+        if (this._useRearCamera && this._useTorch) {
           track.applyConstraints({advanced: [{torch: true}]});
         }
       }).catch(error => {
@@ -1263,7 +1266,7 @@
     <span class="en">Anytime Mirror</span>
     <span class="ja">いつでもミラー</span>
   </h1>
-  <p>Version 2.1.1</p>
+  <p>Version 2.2.0</p>
   <p><a href="https://boxbox1068.github.io/anytime-mirror/">https://boxbox1068.github.io/anytime-mirror/</a></p>
   <p>Copyright 2020 boxbox1068</p>
   <p>Released under <a href="https://opensource.org/licenses/mit-license.php">the MIT license</a>.</p>
@@ -1272,6 +1275,15 @@
     <span class="ja">バージョン履歴</span>
   </h2>
   <dl>
+    <dt>2.2.0</dt>
+    <dd>
+      <span class="en">Apr 29, 2024</span>
+      <span class="ja">2024年4月29日</span>
+    </dd>
+    <dd>
+      <span class="en">Added an option to use the rear camera.</span>
+      <span class="ja">リアカメラを使用するためのオプションを追加。</span>
+    </dd>
     <dt>2.1.1</dt>
     <dd>
       <span class="en">Dec 21, 2021</span>
@@ -1552,6 +1564,16 @@
     <dd>
       <span class="en">Specify whether the video is shown flipped horizontally. The default value is "true".</span>
       <span class="ja">映像を左右反転で表示するかどうかを指定します。既定値は"true"です。</span>
+    </dd>
+    <dt><strong>useRearCamera</strong>=true/false</dt>
+    <dd>
+      <span class="en">Specify whether to use the rear camera instead of the front camera. The default value is "false".</span>
+      <span class="ja">フロントカメラの代わりにリアカメラを使用するかどうかを指定します。既定値は"false"です。</span>
+    </dd>
+    <dt><strong>useTorch</strong>=true/false</dt>
+    <dd>
+      <span class="en">Specify whether to light the torch when the rear camera is used. The default value is "false".</span>
+      <span class="ja">リアカメラ使用時にフラッシュライトを点灯するかどうかを指定します。リアカメラが使用されているときのみ有効です。既定値は"false"です。</span>
     </dd>
     <dt><strong>backgroundColor</strong>=black/%23d00000/rgb(254,205,47)...</dt>
     <dd>
