@@ -1187,6 +1187,11 @@
         return false;
       }
       navigator.mediaDevices.getUserMedia({
+if (this._useRearCamera) {
+  alert(1)
+}
+
+
         video: {facingMode: this._useRearCamera ? 'environment' : 'user'},
         audio: false
       }).then(stream => {
