@@ -225,7 +225,8 @@
     document.body.appendChild(appContainer.body);
     const camera = new Camera({
       flip: queryParser.getValue('flip', 'boolean', true),
-      grayscale: queryParser.getValue('grayscale', 'boolean', false)
+      grayscale: queryParser.getValue('grayscale', 'boolean', false),
+      useRearCamera: queryParser.getValue('useRearCamera', 'boolean', false)
     });
     camera.start(video => {
       magnifier.content = video;
